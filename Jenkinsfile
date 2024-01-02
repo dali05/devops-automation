@@ -7,25 +7,25 @@ pipeline {
     stages{
         stage('Build Maven'){
             steps{
-                checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/sureshrajuvetukuri/devops-automation.git']]])
+                checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/dali05/devops-automation.git']]])
                 sh 'mvn clean install'
             }
         }
         stage('Build docker image'){
             steps{
                 script{
-                    sh 'docker build -t suresh394/kubernetes .'
+                    sh 'docker build -t dali05/kubernetes .'
                 }
             }
         }
         stage('Push image to hub'){
             steps{
                 script{
-                    withCredentials([string(credentialsId: 'dockerhubpwd', variable: 'dockerhubpwd')]) {
-                    sh 'docker login -u suresh394 -p ${dockerhubpwd}'
-                        
+                    withCredentials([usernameColonPassword(credentialsId: '76d44953-76e8-4cfd-bd38-85a9cb9eded5', variable: 'DockerCredentials')]) {
+                        def (dockerUsername, dockerPassword) = DockerCredentials.split(':')
+                        sh "docker login -u $dockerUsername -p $dockerPassword"
                     }
-                    sh 'docker push suresh394/kubernetes'
+                    sh 'docker push dali05/kubernetes'
                 }
             }
         }
