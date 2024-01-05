@@ -21,7 +21,7 @@ pipeline {
         stage('Push image to hub'){
             steps{
                 script{
-                    withCredentials([usernameColonPassword(credentialsId: '76d44953-76e8-4cfd-bd38-85a9cb9eded5', variable: 'DockerCredentials')]) {
+                    withCredentials([usernameColonPassword(credentialsId: 'DockerCredentials', variable: 'DockerCredentials')]) {
                         def (dockerUsername, dockerPassword) = DockerCredentials.split(':')
                         sh "docker login -u $dockerUsername -p $dockerPassword"
                     }
