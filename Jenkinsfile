@@ -11,13 +11,7 @@ pipeline {
                 sh 'mvn clean install'
             }
         }
-        stage('Build docker image'){
-            steps{
-                script{
-                    sh 'docker build -t dali05/kubernetes .'
-                }
-            }
-        }
+       
         stage('Push image to hub'){
             steps{
                 script{
