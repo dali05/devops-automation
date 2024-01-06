@@ -14,10 +14,6 @@ pipeline {
         stage('Build docker image'){
             steps{
                 script{
-                    withCredentials([usernameColonPassword(credentialsId: 'DockerCredentials', variable: 'DockerCredentials')]) {
-                        def (dockerUsername, dockerPassword) = DockerCredentials.split(':')
-                        sh "docker login -u $dockerUsername -p $dockerPassword"
-                    }
                     sh 'docker build -t dali05/kubernetes .'
                 }
             }
