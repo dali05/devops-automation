@@ -14,7 +14,7 @@ pipeline {
         stage('Build docker image'){
             steps{
                 script{
-                    sh 'docker build -t dali05/kubernetes .'
+                    sh 'sudo docker build -t dali05/kubernetes .'
                 }
             }
         }
@@ -25,7 +25,7 @@ pipeline {
                         def (dockerUsername, dockerPassword) = DockerCredentials.split(':')
                         sh "docker login -u $dockerUsername -p $dockerPassword"
                     }
-                    sh 'docker push dali05/kubernetes'
+                    sh 'sudo docker push dali05/kubernetes'
                 }
             }
         }
