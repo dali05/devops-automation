@@ -14,7 +14,11 @@ pipeline {
         stage('Build docker image'){
             steps{
                 script{
-                    sh 'sudo docker build -t dali05/kubernetes .'
+                    withCredentials([usernameColonPassword(credentialsId: 'DockerCredentials', variable: 'DockerCredentials')]) {
+                        def (dockerUsername, dockerPassword) = DockerCredentials.split(':')
+                        sh "docker login -u $dockerUsername -p $dockerPassword"
+                    }
+                    sh 'docker build -t dali05/kubernetes .'
                 }
             }
         }
@@ -25,7 +29,7 @@ pipeline {
                         def (dockerUsername, dockerPassword) = DockerCredentials.split(':')
                         sh "docker login -u $dockerUsername -p $dockerPassword"
                     }
-                    sh 'sudo docker push dali05/kubernetes'
+                    sh 'docker push dali05/kubernetes'
                 }
             }
         }
